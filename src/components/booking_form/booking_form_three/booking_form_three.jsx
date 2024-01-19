@@ -27,9 +27,13 @@ export const Booking_form_three = ({
     }
   }, [submit]);
   const performfetch = async () => {
-    const res = await fetch("http://localhost:3001/doctors");
-    const data = await res.json();
-    set_rawData(data);
+    try {
+      const res = await fetch("https://fixhealthbackend.onrender.com/doctors");
+      const data = await res.json();
+      set_rawData(data);
+    } catch (e) {
+      console.log(e);
+    }
   };
   const getDoctorsInYourCity = () => {
     if (rawData.length > 0) {
