@@ -1,0 +1,38 @@
+.buttonWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.horizontalLine {
+  height: 0.1px;
+  width: 100%;
+  border-top: 1px solid lightgray;
+  margin: 0.5rem 0;
+}
+input {
+  width: 100%;
+}
+.inputwrapper {
+  margin: 3rem 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+.progressDiv {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.progressBar {
+  height: 3px;
+  width: 10rem;
+  background-color: #008b8b;
+}
+.progressValue {
+  padding: 4px;
+  width: 3rem;
+  height: 1.5rem;
+  background-color: #008b8b;
+  border-radius: 20px;
+}

@@ -1,0 +1,14 @@
+.wrapper {
+  padding: 40px;
+  display: grid;
+  row-gap: 50px;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+}
+.NoDoctor {
+  text-align: center;
+  color: white;
+  height: 20rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

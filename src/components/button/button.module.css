@@ -1,0 +1,11 @@
+.button {
+  background-color: #008b8b;
+  padding: 0.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  color: white;
+}
+.formButton {
+  text-align: center;
+  width: 15rem;
+}

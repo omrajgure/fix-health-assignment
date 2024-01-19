@@ -1,0 +1,31 @@
+.card {
+  height: 26rem;
+  width: 15rem;
+  background-color: #001f3f;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  padding: 12px;
+  text-align: center;
+  border-radius: 8px;
+}
+.imgDiv {
+  height: 10rem;
+  width: 100%;
+}
+.infoDiv {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.buttonDiv {
+  margin-top: 3rem;
+}
+.expertise {
+  text-align: center;
+  width: max-content;
+  padding: 0.3rem;
+  background-color: darkgray;
+  border-radius: 18px;
+  color: black;
+}

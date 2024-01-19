@@ -1,0 +1,43 @@
+.progressDiv {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.progressBar {
+  height: 3px;
+  width: 18rem;
+  background-color: #008b8b;
+}
+.progressValue {
+  padding: 4px;
+  width: 3rem;
+  height: 1.5rem;
+  background-color: #008b8b;
+  border-radius: 20px;
+}
+.buttonWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.horizontalLine {
+  height: 0.1px;
+  width: 100%;
+  border-top: 1px solid lightgray;
+  margin: 0.5rem 0;
+  margin-bottom: 2rem;
+}
+textarea {
+  color: lightgray;
+  background-color: inherit;
+  height: 100%;
+  width: 100%;
+  border: none;
+}
+.inputwrapper {
+  height: 5rem;
+  width: 100%;
+}
+.dropdown {
+  margin-bottom: 1rem;
+}
