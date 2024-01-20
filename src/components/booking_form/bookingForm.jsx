@@ -59,7 +59,8 @@ export const BookingForm = ({
   const performfetch = async () => {
     try {
       set_isFetching(true);
-      const res = await fetch("https://fixhealthbackend.onrender.com/doctors");
+      // const res = await fetch("https://fixhealthbackend.onrender.com/doctors");
+      const res = await fetch("/api/doctors");
       const data = await res.json();
 
       set_rawData(data);
