@@ -1,10 +1,11 @@
 .leftnavi {
   position: absolute;
-  top: 60%;
-  left: 10px;
+  top: 55%;
+  left: 0;
   transform: translateY(-50%);
   cursor: pointer;
   z-index: 10;
   height: 3rem;
   width: 3rem;
+  z-index: 100;
 }

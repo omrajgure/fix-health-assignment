@@ -3,7 +3,12 @@ import { useState } from "react";
 import styles from "./hero.module.css";
 import { Navbar } from "../navbar/navbar";
 import { BookingForm } from "../booking_form/bookingForm";
-export const Hero = ({ InCityDoctors, set_InCityDoctors }) => {
+export const Hero = ({
+  InCityDoctors,
+  set_InCityDoctors,
+  set_isFetching,
+  myref,
+}) => {
   return (
     <div className={styles.wrapper}>
       {" "}
@@ -11,6 +16,8 @@ export const Hero = ({ InCityDoctors, set_InCityDoctors }) => {
       <BookingForm
         InCityDoctors={InCityDoctors}
         set_InCityDoctors={set_InCityDoctors}
+        set_isFetching={set_isFetching}
+        myref={myref}
       />
     </div>
   );

@@ -59,7 +59,7 @@ export const Testimonials = () => {
       <h2 style={{ color: "white", textAlign: "center" }}>Testimonials</h2>
       <div className={styles.gridwrapper}>
         <Swiper
-          style={{ padding: "0px 20px" }}
+          style={{ padding: "0px 30px", marginLeft: "0" }}
           initialSlide={0}
           modules={[Navigation]}
           spaceBetween={40}

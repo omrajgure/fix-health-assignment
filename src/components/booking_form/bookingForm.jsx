@@ -7,20 +7,31 @@ import { Booking_form_two } from "./booking_form_two/booking_form_two";
 import { Booking_form_three } from "./booking_form_three/booking_form_three";
 import { useState } from "react";
 import { enqueueSnackbar } from "notistack";
+import { Link } from "react-scroll";
 
-export const BookingForm = ({ InCityDoctors, set_InCityDoctors }) => {
+export const BookingForm = ({
+  InCityDoctors,
+  set_InCityDoctors,
+  set_isFetching,
+  myref,
+}) => {
+  const scrollOptions = {
+    to: "result",
+    smooth: true,
+  };
   const [rawData, set_rawData] = useState([]);
   const urlCity = window.location.pathname.split("/")[1].toLowerCase();
+
   useEffect(() => {
     if (urlCity) {
+      myref.current.scrollIntoView({ behavior: "smooth" });
       performfetch();
     }
   }, [urlCity]);
+
   useEffect(() => {
     if (rawData.length > 0) {
-      if (urlCity) {
-        getDoctorsInYourCity();
-      }
+      getDoctorsInYourCity();
     }
   }, [rawData]);
 
@@ -35,35 +46,24 @@ export const BookingForm = ({ InCityDoctors, set_InCityDoctors }) => {
 
   const performfetch = async () => {
     try {
+      set_isFetching(true);
       const res = await fetch("https://fixhealthbackend.onrender.com/doctors");
       const data = await res.json();
+
       set_rawData(data);
     } catch (e) {
       console.log(e);
+    } finally {
+      set_isFetching(false);
     }
   };
-
-  console.log(InCityDoctors);
 
   const [name, set_name] = useState("");
   const [number, set_number] = useState("");
   const [age, set_age] = useState("");
   const [city, set_city] = useState(urlCity || "");
-  const [First_step, set_First_step] = useState(false);
-  const [second_step, set_second_step] = useState(false);
-  const [submit, set_submit] = useState(false);
-
-  // useEffect(() => {
-  //   if (submit) {
-  //     set_First_step(false);
-  //     set_second_step(false);
-  //     set_submit(false);
-  //     set_name("");
-  //     set_number("");
-  //     set_age("");
-  //     set_city("");
-  //   }
-  // }, [submit]);
+  const [company, set_company] = useState("");
+  const [complaints, set_complaints] = useState("");
 
   const handleNameChange = (e) => {
     set_name(e.target.value);
@@ -72,21 +72,87 @@ export const BookingForm = ({ InCityDoctors, set_InCityDoctors }) => {
     const onlyNumbers = e.target.value.replace(/[^0-9]/g, "");
     set_number(onlyNumbers);
   };
-  const validateInput = (val) => {
-    if (name.length === 0) {
-      enqueueSnackbar("Please enter Name", {
-        variant: "warning",
-      });
-    } else if (number.length !== 10) {
-      enqueueSnackbar("Enter appropriate number", {
-        variant: "warning",
-      });
+  const handleAge = (e) => {
+    const onlyNumbers = e.target.value.replace(/[^0-9]/g, "").slice(0, 2);
+    set_age(onlyNumbers);
+  };
+  const handleCity = (e) => {
+    set_city(e.target.value);
+  };
+  const handleCompany = (e) => {
+    set_company(e.target.value);
+  };
+  const handleComplaints = (e) => {
+    set_complaints(e.target.value);
+  };
+
+  const [page, setPage] = useState(0);
+  const PageDisplay = () => {
+    if (page === 0) {
+      return Main_form;
+    } else if (page === 1) {
+      return (
+        <Booking_form_two
+          age={age}
+          city={city}
+          company={company}
+          handleAge={handleAge}
+          handleCity={handleCity}
+          handleCompany={handleCompany}
+        />
+      );
     } else {
-      handleClick(val);
+      return (
+        <Booking_form_three
+          age={age}
+          complaints={complaints}
+          handleComplaints={handleComplaints}
+        />
+      );
     }
   };
-  const handleClick = (val) => {
-    set_First_step(val);
+
+  // ***************************************************************//
+  const validateInput = (val) => {
+    if (page === 0) {
+      if (name.length === 0) {
+        enqueueSnackbar("Please enter Name", {
+          variant: "warning",
+        });
+      } else if (number.length !== 10) {
+        enqueueSnackbar("Enter appropriate number", {
+          variant: "warning",
+        });
+      } else {
+        setPage((currPage) => currPage + 1);
+      }
+    }
+    if (page === 1) {
+      if (age.length === 0) {
+        enqueueSnackbar("Please enter age", {
+          variant: "warning",
+        });
+      } else if (city.length === 0) {
+        enqueueSnackbar("Please enter City", {
+          variant: "warning",
+        });
+      } else if (company.length === 0) {
+        enqueueSnackbar("Please enter Company name", {
+          variant: "warning",
+        });
+      } else {
+        setPage((currPage) => currPage + 1);
+      }
+    }
+    if (page === 2) {
+      if (complaints.length === 0) {
+        enqueueSnackbar("Please fill the complaints field", {
+          variant: "warning",
+        });
+      } else {
+        performfetch();
+      }
+    }
   };
 
   let Main_form = (
@@ -125,37 +191,20 @@ export const BookingForm = ({ InCityDoctors, set_InCityDoctors }) => {
         </div>
         <div className={styles.horizontalLine}></div>
       </div>
-      <CustomButton
-        text={"Start Your Recovery"}
-        form={true}
-        handleCLick={validateInput}
-      />
     </div>
   );
   return (
     <div className={styles.booking_form}>
-      {!First_step ? (
-        Main_form
-      ) : !second_step ? (
-        <Booking_form_two
-          set_second_step={set_second_step}
-          set_age={set_age}
-          age={age}
-          set_city={set_city}
-          city={city}
-        />
-      ) : (
-        <Booking_form_three
-          age={age}
-          city={city}
-          submit={submit}
-          set_submit={set_submit}
-          InCityDoctors={InCityDoctors}
-          set_InCityDoctors={set_InCityDoctors}
-          rawData={rawData}
-          set_rawData={set_rawData}
-        />
-      )}
+      {PageDisplay()}
+      <Link {...(complaints.length > 0 && scrollOptions)}>
+        <div className={styles.buttonWrapper}>
+          <CustomButton
+            text={page === 0 ? "Start Your Recovery" : "Continue"}
+            form={true}
+            handleCLick={validateInput}
+          />
+        </div>
+      </Link>
     </div>
   );
 };
