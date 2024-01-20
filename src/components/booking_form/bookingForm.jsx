@@ -8,6 +8,10 @@ import { Booking_form_three } from "./booking_form_three/booking_form_three";
 import { useState } from "react";
 import { enqueueSnackbar } from "notistack";
 import { Link } from "react-scroll";
+import TextField from "@mui/material/TextField";
+import { Box } from "@mui/material";
+import { ThemeProvider } from "@mui/material/styles";
+import { ThemeCustom } from "../theme/theme";
 
 export const BookingForm = ({
   InCityDoctors,
@@ -15,19 +19,27 @@ export const BookingForm = ({
   set_isFetching,
   myref,
 }) => {
+  const [experience, setExperience] = useState("");
+
+  const handleRadioChange = (event) => {
+    setExperience(event.target.value);
+  };
+
   const scrollOptions = {
     to: "result",
     smooth: true,
   };
   const [rawData, set_rawData] = useState([]);
-  const urlCity = window.location.pathname.split("/")[1].toLowerCase();
+
+  const urlParams = new URLSearchParams(window.location.search);
+  const param1Value = urlParams.get("city");
 
   useEffect(() => {
-    if (urlCity) {
+    if (param1Value) {
       myref.current.scrollIntoView({ behavior: "smooth" });
       performfetch();
     }
-  }, [urlCity]);
+  }, [param1Value]);
 
   useEffect(() => {
     if (rawData.length > 0) {
@@ -61,7 +73,7 @@ export const BookingForm = ({
   const [name, set_name] = useState("");
   const [number, set_number] = useState("");
   const [age, set_age] = useState("");
-  const [city, set_city] = useState(urlCity || "");
+  const [city, set_city] = useState(param1Value || "");
   const [company, set_company] = useState("");
   const [complaints, set_complaints] = useState("");
 
@@ -107,6 +119,8 @@ export const BookingForm = ({
           age={age}
           complaints={complaints}
           handleComplaints={handleComplaints}
+          experience={experience}
+          handleRadioChange={handleRadioChange}
         />
       );
     }
@@ -149,6 +163,10 @@ export const BookingForm = ({
         enqueueSnackbar("Please fill the complaints field", {
           variant: "warning",
         });
+      } else if (age > 40 && experience.length === 0) {
+        enqueueSnackbar("Please Select an option", {
+          variant: "warning",
+        });
       } else {
         performfetch();
       }
@@ -162,42 +180,58 @@ export const BookingForm = ({
         100+ Expert Physiotherapists for 100+ conditions
       </p>
       <div className={styles.inputwrapper}>
-        <div className={styles.inputinner}>
-          <div style={{ height: "2rem", width: "3rem" }}>
-            <img alt="Userimg" src={Userimg} height={"100%"} width={"100%"} />
-          </div>
-          <input
-            value={name}
-            placeholder="Your Name"
-            onChange={handleNameChange}
+        <Box sx={{ display: "flex", alignItems: "flex-end" }}>
+          <img
+            alt="Userimg"
+            src={Userimg}
+            height={"10%"}
+            width={"10%"}
+            style={{ marginRight: "0.5rem" }}
           />
-        </div>
-        <div className={styles.horizontalLine}></div>
-        <div className={styles.inputinner}>
-          <div style={{ height: "2rem", width: "3rem" }}>
-            <img
-              height={"100%"}
-              width={"100%"}
-              src={indianFlag}
-              alt="indian flag"
+          <ThemeProvider theme={ThemeCustom}>
+            <TextField
+              id="input-with-sx"
+              label="Your Name"
+              variant="standard"
+              value={name}
+              onChange={handleNameChange}
             />
-          </div>
-          <input
-            type="tel"
-            value={number}
-            placeholder="+91"
-            onChange={handleNumberChange}
+          </ThemeProvider>
+        </Box>
+        <Box sx={{ display: "flex", alignItems: "flex-end" }}>
+          <img
+            alt="Userimg"
+            src={indianFlag}
+            height={"10%"}
+            width={"10%"}
+            style={{ marginRight: "0.5rem" }}
           />
-        </div>
-        <div className={styles.horizontalLine}></div>
+          <ThemeProvider theme={ThemeCustom}>
+            <TextField
+              id="input-with-sx"
+              label="Contact no."
+              variant="standard"
+              value={number}
+              onChange={handleNumberChange}
+            />
+          </ThemeProvider>
+        </Box>
       </div>
     </div>
   );
   return (
     <div className={styles.booking_form}>
       {PageDisplay()}
-      <Link {...(complaints.length > 0 && scrollOptions)}>
-        <div className={styles.buttonWrapper}>
+      <Link
+        {...((complaints.length > 0 &&
+          experience.length > 0 &&
+          scrollOptions) ||
+          (complaints.length > 0 && age <= 40 && scrollOptions))}
+      >
+        <div
+          className={styles.buttonWrapper}
+          style={{ marginTop: page === 2 && age <= 40 ? "6rem" : "1rem" }}
+        >
           <CustomButton
             text={page === 0 ? "Start Your Recovery" : "Continue"}
             form={true}

@@ -1,5 +1,8 @@
 import React from "react";
 import styles from "./booking_form_two.module.css";
+import TextField from "@mui/material/TextField";
+import { ThemeProvider } from "@mui/material/styles";
+import { ThemeCustom } from "../../theme/theme";
 export const Booking_form_two = ({
   age,
   city,
@@ -16,12 +19,32 @@ export const Booking_form_two = ({
       </div>
       <h2>Help us understand you better</h2>
       <div className={styles.inputwrapper}>
-        <input value={age} placeholder="Age" onChange={handleAge} />
-        <div className={styles.horizontalLine}></div>
-        <input value={city} placeholder="City" onChange={handleCity} />
-        <div className={styles.horizontalLine}></div>
-        <input value={company} placeholder="Company" onChange={handleCompany} />
-        <div className={styles.horizontalLine}></div>
+        <ThemeProvider theme={ThemeCustom}>
+          <TextField
+            id="standard-basic"
+            label="Age"
+            variant="standard"
+            onChange={handleAge}
+            value={age}
+            fullWidth={true}
+          />
+          <TextField
+            id="standard-basic"
+            label="City"
+            variant="standard"
+            onChange={handleCity}
+            value={city}
+            fullWidth={true}
+          />
+          <TextField
+            id="standard-basic"
+            label="Company"
+            variant="standard"
+            onChange={handleCompany}
+            value={company}
+            fullWidth={true}
+          />
+        </ThemeProvider>
       </div>
     </div>
   );

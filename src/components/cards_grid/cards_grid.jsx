@@ -6,7 +6,7 @@ export const Cards_grid = ({ InCityDoctors }) => {
     <div>
       {InCityDoctors.length > 0 ? (
         <h1 style={{ textAlign: "center", color: "white" }}>
-          Available doctors in your area :
+          Available doctors in your area
         </h1>
       ) : (
         <div className={styles.NoDoctor}>
