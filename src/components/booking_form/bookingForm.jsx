@@ -12,6 +12,7 @@ import TextField from "@mui/material/TextField";
 import { Box } from "@mui/material";
 import { ThemeProvider } from "@mui/material/styles";
 import { ThemeCustom } from "../theme/theme";
+import PocketBase from "pocketbase";
 
 export const BookingForm = ({
   InCityDoctors,
@@ -19,6 +20,10 @@ export const BookingForm = ({
   set_isFetching,
   myref,
 }) => {
+  // database //
+  const pb = new PocketBase("https://fixhealth.pockethost.io");
+
+  // ****************//
   const [experience, setExperience] = useState("");
 
   const handleRadioChange = (event) => {
@@ -59,9 +64,12 @@ export const BookingForm = ({
   const performfetch = async () => {
     try {
       set_isFetching(true);
-      const res = await fetch("https://fixhealthbackend.onrender.com/doctors");
+      // const res = await fetch("https://fixhealthbackend.onrender.com/doctors");
+      const res = await pb.collection("doctors").getFullList();
 
-      const data = await res.json();
+      // const data = await res.json();
+      const data = res[0].doctor.doctors;
+      // console.log(data);
 
       set_rawData(data);
     } catch (e) {
